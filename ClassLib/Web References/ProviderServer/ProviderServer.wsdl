@@ -1,0 +1,687 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://its.gov/c2c_webservices" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://its.gov/c2c_webservices" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://its.gov/c2c_webservices">
+      <s:element name="CancelSubscriptions">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="sSubscriptionDataTypes" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CancelSubscriptionsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="CancelSubscriptionsResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCurrentStatus">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetCurrentStatusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCurrentStatusResult" type="tns:InfrastructureStatus" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="InfrastructureStatus">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="SubscribedDataTypes" type="tns:ArrayOfString" />
+          <s:element minOccurs="0" maxOccurs="1" name="DataClients" type="tns:ArrayOfClientComponent" />
+          <s:element minOccurs="0" maxOccurs="1" name="DataSources" type="tns:ArrayOfDataSourceComponent" />
+          <s:element minOccurs="0" maxOccurs="1" name="DataStatus" type="tns:ArrayOfDatatype" />
+          <s:element minOccurs="0" maxOccurs="1" name="ExpansionEntries" type="tns:ArrayOfExpansion" />
+          <s:element minOccurs="1" maxOccurs="1" name="Latitude" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Location" type="tns:SerializableUri" />
+          <s:element minOccurs="1" maxOccurs="1" name="Longitude" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ServiceStartTime" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="Status" type="tns:ComponentStatus" />
+          <s:element minOccurs="1" maxOccurs="1" name="Type" type="tns:ComponentType" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="DataType" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfClientComponent">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ClientComponent" nillable="true" type="tns:ClientComponent" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ClientComponent">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:ConnectedComponent" />
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ConnectedComponent">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ConnectionAttempts" type="s:unsignedInt" />
+          <s:element minOccurs="1" maxOccurs="1" name="ConnectionStartTime" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="LastGoodKeepAlive" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="LastKeepAlive" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="Location" type="tns:SerializableUri" />
+          <s:element minOccurs="1" maxOccurs="1" name="Status" type="tns:ComponentStatus" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="SerializableUri">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="AbsoluteUri" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="ComponentStatus">
+        <s:restriction base="s:string">
+          <s:enumeration value="Active" />
+          <s:enumeration value="Error" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="DataSourceComponent">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:ConnectedComponent">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="Type" type="tns:ComponentType" />
+              <s:element minOccurs="0" maxOccurs="1" name="IncludeNetIds" type="tns:ArrayOfString1" />
+              <s:element minOccurs="0" maxOccurs="1" name="ExcludeNetIds" type="tns:ArrayOfString1" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:simpleType name="ComponentType">
+        <s:restriction base="s:string">
+          <s:enumeration value="Collector" />
+          <s:enumeration value="Extractor" />
+          <s:enumeration value="Provider" />
+          <s:enumeration value="CommandReceiver" />
+          <s:enumeration value="Plugin" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="ArrayOfString1">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="NetId" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfDataSourceComponent">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="DataSourceComponent" nillable="true" type="tns:DataSourceComponent" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfDatatype">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Datatype" nillable="true" type="tns:Datatype" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Datatype">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="DataType" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Networks" type="tns:ArrayOfNetworkDataItem" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfNetworkDataItem">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="NetworkDataItem" nillable="true" type="tns:NetworkDataItem" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="NetworkDataItem">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="LastUpdate" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="LastUpdateCount" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="NetworkID" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="TotalStoredCount" type="s:unsignedInt" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfExpansion">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Expansion" nillable="true" type="tns:Expansion" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Expansion">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Data" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Type" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetQueueStatus">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetQueueStatusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetQueueStatusResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="KeepAlive">
+        <s:complexType />
+      </s:element>
+      <s:element name="KeepAliveResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="KeepAliveResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Login">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="sUpdatesURI" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LoginResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LoginResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Logout">
+        <s:complexType />
+      </s:element>
+      <s:element name="LogoutResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="LogoutResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="QueuedSubscribeNets">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="sSubscriptionDataTypes" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sNetworks" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="QueuedSubscribeNetsResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="QueuedSubscribeNetsBlocked">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="sSubscriptionDataTypes" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sNetworks" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="rejectedNetworks" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="QueuedSubscribeNetsBlockedResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="RequestNets">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="dataTypes" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="networks" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RequestNetsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RequestNetsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RequestNetsBlocked">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="dataTypes" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="acceptedNetworks" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="rejectedNetworks" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RequestNetsBlockedResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RequestNetsBlockedResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Subscribe">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="sSubscriptionDataTypes" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="bPersistent" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SubscribeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SubscribeResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SubscribeNets">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="sSubscriptionDataTypes" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sNetworks" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="bPersistent" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SubscribeNetsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SubscribeNetsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SubscribeNetsBlocked">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="sSubscriptionDataTypes" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="acceptedNetworks" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="rejectedNetworks" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="bPersistent" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SubscribeNetsBlockedResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SubscribeNetsBlockedResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="CancelSubscriptionsSoapIn">
+    <wsdl:part name="parameters" element="tns:CancelSubscriptions" />
+  </wsdl:message>
+  <wsdl:message name="CancelSubscriptionsSoapOut">
+    <wsdl:part name="parameters" element="tns:CancelSubscriptionsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCurrentStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCurrentStatus" />
+  </wsdl:message>
+  <wsdl:message name="GetCurrentStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCurrentStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetQueueStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:GetQueueStatus" />
+  </wsdl:message>
+  <wsdl:message name="GetQueueStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:GetQueueStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="KeepAliveSoapIn">
+    <wsdl:part name="parameters" element="tns:KeepAlive" />
+  </wsdl:message>
+  <wsdl:message name="KeepAliveSoapOut">
+    <wsdl:part name="parameters" element="tns:KeepAliveResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoginSoapIn">
+    <wsdl:part name="parameters" element="tns:Login" />
+  </wsdl:message>
+  <wsdl:message name="LoginSoapOut">
+    <wsdl:part name="parameters" element="tns:LoginResponse" />
+  </wsdl:message>
+  <wsdl:message name="LogoutSoapIn">
+    <wsdl:part name="parameters" element="tns:Logout" />
+  </wsdl:message>
+  <wsdl:message name="LogoutSoapOut">
+    <wsdl:part name="parameters" element="tns:LogoutResponse" />
+  </wsdl:message>
+  <wsdl:message name="QueuedSubscribeNetsSoapIn">
+    <wsdl:part name="parameters" element="tns:QueuedSubscribeNets" />
+  </wsdl:message>
+  <wsdl:message name="QueuedSubscribeNetsSoapOut">
+    <wsdl:part name="parameters" element="tns:QueuedSubscribeNetsResponse" />
+  </wsdl:message>
+  <wsdl:message name="QueuedSubscribeNetsBlockedSoapIn">
+    <wsdl:part name="parameters" element="tns:QueuedSubscribeNetsBlocked" />
+  </wsdl:message>
+  <wsdl:message name="QueuedSubscribeNetsBlockedSoapOut">
+    <wsdl:part name="parameters" element="tns:QueuedSubscribeNetsBlockedResponse" />
+  </wsdl:message>
+  <wsdl:message name="RequestNetsSoapIn">
+    <wsdl:part name="parameters" element="tns:RequestNets" />
+  </wsdl:message>
+  <wsdl:message name="RequestNetsSoapOut">
+    <wsdl:part name="parameters" element="tns:RequestNetsResponse" />
+  </wsdl:message>
+  <wsdl:message name="RequestNetsBlockedSoapIn">
+    <wsdl:part name="parameters" element="tns:RequestNetsBlocked" />
+  </wsdl:message>
+  <wsdl:message name="RequestNetsBlockedSoapOut">
+    <wsdl:part name="parameters" element="tns:RequestNetsBlockedResponse" />
+  </wsdl:message>
+  <wsdl:message name="SubscribeSoapIn">
+    <wsdl:part name="parameters" element="tns:Subscribe" />
+  </wsdl:message>
+  <wsdl:message name="SubscribeSoapOut">
+    <wsdl:part name="parameters" element="tns:SubscribeResponse" />
+  </wsdl:message>
+  <wsdl:message name="SubscribeNetsSoapIn">
+    <wsdl:part name="parameters" element="tns:SubscribeNets" />
+  </wsdl:message>
+  <wsdl:message name="SubscribeNetsSoapOut">
+    <wsdl:part name="parameters" element="tns:SubscribeNetsResponse" />
+  </wsdl:message>
+  <wsdl:message name="SubscribeNetsBlockedSoapIn">
+    <wsdl:part name="parameters" element="tns:SubscribeNetsBlocked" />
+  </wsdl:message>
+  <wsdl:message name="SubscribeNetsBlockedSoapOut">
+    <wsdl:part name="parameters" element="tns:SubscribeNetsBlockedResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ProviderServerSoap">
+    <wsdl:operation name="CancelSubscriptions">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">This is the request from a client to cancel one or more current subscriptions. The subscription data types are provided as a comma-delimited list of XML data type element names.</wsdl:documentation>
+      <wsdl:input message="tns:CancelSubscriptionsSoapIn" />
+      <wsdl:output message="tns:CancelSubscriptionsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCurrentStatus">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns information about the infrastructure component and the components which it is currently connected to.</wsdl:documentation>
+      <wsdl:input message="tns:GetCurrentStatusSoapIn" />
+      <wsdl:output message="tns:GetCurrentStatusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetQueueStatus">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns an string containing the number of queues and the current number of messages they have in them.</wsdl:documentation>
+      <wsdl:input message="tns:GetQueueStatusSoapIn" />
+      <wsdl:output message="tns:GetQueueStatusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="KeepAlive">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Keep-alive message for letting the server know that the client is still active.</wsdl:documentation>
+      <wsdl:input message="tns:KeepAliveSoapIn" />
+      <wsdl:output message="tns:KeepAliveSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Login">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">This is the Login request to the Collector from a data consumer, such as a Collector or Extractor. The data consumer provides the URI of the web service where the traffic and status updates will be sent. The Collector returns the session ID of the update session registered at the data consumer's update web service.</wsdl:documentation>
+      <wsdl:input message="tns:LoginSoapIn" />
+      <wsdl:output message="tns:LoginSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Logout">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">This is the Logout notification to the Collector from a data consumer, such as another Collector or an Extractor.</wsdl:documentation>
+      <wsdl:input message="tns:LogoutSoapIn" />
+      <wsdl:output message="tns:LogoutSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="QueuedSubscribeNets">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">This is the Subscription request to the Collector from a data consumer, such as a Collector or Extractor.  The Collector sends the current status data via the update URL provided at login.The sSubscriptionDataTypes string contains the XML element names for all requested data types, delimited by a single space. The sNetworks string contains the XML element names for all requested networks.</wsdl:documentation>
+      <wsdl:input message="tns:QueuedSubscribeNetsSoapIn" />
+      <wsdl:output message="tns:QueuedSubscribeNetsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="QueuedSubscribeNetsBlocked">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">This is the Subscription request to the Collector from a data consumer, such as a Collector or Extractor.  The Collector sends the current status data via the update URL provided at login.The sSubscriptionDataTypes string contains the XML element names for all requested data types, delimited by a single space. The sNetworks string contains the XML element names for all requested networks. The rejectedNetworks contains a list of of networks for which updates should not be sent.</wsdl:documentation>
+      <wsdl:input message="tns:QueuedSubscribeNetsBlockedSoapIn" />
+      <wsdl:output message="tns:QueuedSubscribeNetsBlockedSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RequestNets">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves current status data for the specified datatypes and networks.</wsdl:documentation>
+      <wsdl:input message="tns:RequestNetsSoapIn" />
+      <wsdl:output message="tns:RequestNetsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RequestNetsBlocked">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves current status data for the specified datatypes and networks.</wsdl:documentation>
+      <wsdl:input message="tns:RequestNetsBlockedSoapIn" />
+      <wsdl:output message="tns:RequestNetsBlockedSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Subscribe">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">This is the Subscription request to the Collector from a data consumer, such as a Collector or Extractor.  The Collector returns an XML string containing the subscribed-for data. The sSubscriptionDataTypes string contains the XML element names for all requested data types, delimited by a single space. The bPersistent flag is set if updates should be sent to the client's update web service.  If not set, only the current status will be sent in the response - no further updates will be provided.</wsdl:documentation>
+      <wsdl:input message="tns:SubscribeSoapIn" />
+      <wsdl:output message="tns:SubscribeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SubscribeNets">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">This is the Subscription request to the Collector from a data consumer, such as a Collector or Extractor.  The Collector returns an XML string containing the subscribed-for data and networks. The sSubscriptionDataTypes string contains the XML element names for all requested data types, delimited by a single space. The sNetworks string contains the XML element names for all requested networks, The bPersistent flag is set if updates should be sent to the client's update web service.  If not set, only the current status will be sent in the response - no further updates will be provided.</wsdl:documentation>
+      <wsdl:input message="tns:SubscribeNetsSoapIn" />
+      <wsdl:output message="tns:SubscribeNetsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SubscribeNetsBlocked">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">This is the Subscription request to the Collector from a data consumer, such as a Collector or Extractor.  The Collector returns an XML string containing the subscribed-for data and networks. The sSubscriptionDataTypes string contains the XML element names for all requested data types, delimited by a single space. The sNetworks string contains the XML element names for all requested networks, The bPersistent flag is set if updates should be sent to the client's update web service.  If not set, only the current status will be sent in the response - no further updates will be provided.</wsdl:documentation>
+      <wsdl:input message="tns:SubscribeNetsBlockedSoapIn" />
+      <wsdl:output message="tns:SubscribeNetsBlockedSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ProviderServerSoap" type="tns:ProviderServerSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="CancelSubscriptions">
+      <soap:operation soapAction="http://its.gov/c2c_webservices/CancelSubscriptions" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCurrentStatus">
+      <soap:operation soapAction="http://its.gov/c2c_webservices/GetCurrentStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetQueueStatus">
+      <soap:operation soapAction="http://its.gov/c2c_webservices/GetQueueStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="KeepAlive">
+      <soap:operation soapAction="http://its.gov/c2c_webservices/KeepAlive" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Login">
+      <soap:operation soapAction="http://its.gov/c2c_webservices/Login" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Logout">
+      <soap:operation soapAction="http://its.gov/c2c_webservices/Logout" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueuedSubscribeNets">
+      <soap:operation soapAction="http://its.gov/c2c_webservices/QueuedSubscribeNets" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueuedSubscribeNetsBlocked">
+      <soap:operation soapAction="http://its.gov/c2c_webservices/QueuedSubscribeNetsBlocked" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RequestNets">
+      <soap:operation soapAction="http://its.gov/c2c_webservices/RequestNets" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RequestNetsBlocked">
+      <soap:operation soapAction="http://its.gov/c2c_webservices/RequestNetsBlocked" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Subscribe">
+      <soap:operation soapAction="http://its.gov/c2c_webservices/Subscribe" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SubscribeNets">
+      <soap:operation soapAction="http://its.gov/c2c_webservices/SubscribeNets" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SubscribeNetsBlocked">
+      <soap:operation soapAction="http://its.gov/c2c_webservices/SubscribeNetsBlocked" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ProviderServerSoap12" type="tns:ProviderServerSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="CancelSubscriptions">
+      <soap12:operation soapAction="http://its.gov/c2c_webservices/CancelSubscriptions" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCurrentStatus">
+      <soap12:operation soapAction="http://its.gov/c2c_webservices/GetCurrentStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetQueueStatus">
+      <soap12:operation soapAction="http://its.gov/c2c_webservices/GetQueueStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="KeepAlive">
+      <soap12:operation soapAction="http://its.gov/c2c_webservices/KeepAlive" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Login">
+      <soap12:operation soapAction="http://its.gov/c2c_webservices/Login" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Logout">
+      <soap12:operation soapAction="http://its.gov/c2c_webservices/Logout" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueuedSubscribeNets">
+      <soap12:operation soapAction="http://its.gov/c2c_webservices/QueuedSubscribeNets" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueuedSubscribeNetsBlocked">
+      <soap12:operation soapAction="http://its.gov/c2c_webservices/QueuedSubscribeNetsBlocked" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RequestNets">
+      <soap12:operation soapAction="http://its.gov/c2c_webservices/RequestNets" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RequestNetsBlocked">
+      <soap12:operation soapAction="http://its.gov/c2c_webservices/RequestNetsBlocked" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Subscribe">
+      <soap12:operation soapAction="http://its.gov/c2c_webservices/Subscribe" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SubscribeNets">
+      <soap12:operation soapAction="http://its.gov/c2c_webservices/SubscribeNets" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SubscribeNetsBlocked">
+      <soap12:operation soapAction="http://its.gov/c2c_webservices/SubscribeNetsBlocked" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ProviderServer">
+    <wsdl:port name="ProviderServerSoap" binding="tns:ProviderServerSoap">
+      <soap:address location="http://localhost/C2C_INRIX_DAL1/Provider/ProviderServer.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ProviderServerSoap12" binding="tns:ProviderServerSoap12">
+      <soap12:address location="http://localhost/C2C_INRIX_DAL1/Provider/ProviderServer.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
